@@ -146,7 +146,8 @@ app.get('/dashboard',(req,res)=>{
                     myFollowers.push({
                         username: userData[i].login,
                         render: userData[i].repos_url,
-                        events: userData[i].url+"/events"
+                        events: userData[i].url+"/events",
+                        commits: "",
                     })
                     // rp(userData[i].url+"/events")
                     // .then(user_events=>{
@@ -158,30 +159,42 @@ app.get('/dashboard',(req,res)=>{
                 }
                 // res.json(myFollowers)
                 // GET USER EVENTS
-                let options = {
+                let options2 = {
                     method: 'GET',
-                    uri: myFollowers[1].events,
-                    form: {
-                        
-                    },
-                    headers: {
-                        'User-Agent': 'Roqak',
-                        'Accept': 'application/json'
-                      }
+        uri: 'https://api.github.com/search/commits?q=author:sainttobs&type=Commits',
+        form: {
+            q:"Roqak",
+            type:"commit",
+            // state: "kdkdkddldldlkdkfd",
+            // code: req.cookies.code
+        },
+        headers: {
+            'User-Agent': 'Roqak',
+            'Accept': 'application/vnd.github.cloak-preview'
+          }
                 };
-                for(let k = 0; k<myFollowers; k++){
-                    options.uri = myFollowers[k].events
+                // let totalcommits = []
+                // for(let k = 0; k<myFollowers; k++){
+                    console.log(myFollowers)
+                    console.log(req.cookies.code)
+                    // options2.uri =`https://api.github.com/search/commits?q=author:${myFollowers[1].username}&type=Commits`
+                    // options2.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
+                    // options2.form.code = req.cookies.code;
                     rp(options)
                     .then(user_events=>{
                         let all_user_events = JSON.parse(user_events);
-                        let pushEvents = all_user_events.filter(eventss=>eventss.type === "PushEvent")
-                        myFollowers[k].commits = 'pushEvents.length'
-                        // res.json(pushEvents)
+                        // let pushEvents = all_user_events.filter(eventss=>eventss.type === "PushEvent")
+                        // totalcommits.push(user_events)
+                        // console.log(user_events)
+                        // res.json(user_events)
+                        res.redirect('/dd')
                     })
                     .catch(user_error=>{
                         res.send(user_error)
                     })
-                }
+                // res.json(totalcommits)
+
+                // }
                 // req.headers['User-Agent'] = 'Roqak';
                 // rp(options)
                 //     .then(user_events=>{
@@ -192,7 +205,7 @@ app.get('/dashboard',(req,res)=>{
                 //     .catch(user_error=>{
                 //         res.send(user_error)
                 //     })
-                res.json(myFollowers)
+                // res.json(totalcommits)
                 })
             .catch(err=>{
                 console.log(`Error level 1: ${err}`)
@@ -219,25 +232,44 @@ app.get('/dd',(req,res)=>{
     // res.headers.Accept ='application/vnd.github.cloak-preview';
     // res.headers['User-Agent'] = 'Roqak';
     // res.header('User-Agent') = 'Roqak'
+    console.log(myFollowers)
     let options = {
         method: 'GET',
-        uri: 'https://api.github.com/search/commits',
+        // uri: 'https://api.github.com/search/commits?q=author:sainttobs&type=Commits',
         form: {
-            q:"author:Roqak",
-            type:"commit"
+            q:"Roqak",
+            type:"commit",
+            // state: "kdkdkddldldlkdkfd",
+            // code: req.cookies.code
         },
         headers: {
             'User-Agent': 'Roqak',
             'Accept': 'application/vnd.github.cloak-preview'
           }
     };
-    rp(options)
+    let finalUser = []
+    for(let o = 0; o< myFollowers.length; o++){
+        options.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
+        rp(options)
     .then(result=>{
-        res.json(JSON.parse(result))
+        let nnn = {
+            username : myFollowers[o].username,
+            render: myFollowers[o].render,
+            events: myFollowers[o].events,
+            commits: result.total_count,
+        }
+        // myFollowers[o]['username'] = result.total_count
+        finalUser.push(nnn)
+        // res.json(JSON.parse(result))
+        console.log("///////////////////////////////////////////////")
+        console.log(nnn)
     })
     .catch(err=>{
         res.send(err)
     })
+    }
+    res.json(finalUser)
+    
 })
 
 console.log(modify(sample))
