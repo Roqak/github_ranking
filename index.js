@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const rp = require('request-promise');
-const session = require('express-session')
 const hbs = require('express-handlebars');
 const path = require('path');
 const keys = require('./config/keys');
@@ -14,12 +13,17 @@ app.engine('.hbs', hbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', '.hbs');
 app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: 'keyboardkitkitcat',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {}
-}))
+let getEvents = {
+    method: 'GET',
+    headers: {
+        'User-Agent': 'Roqak',
+        'Accept': 'application/json'
+      },
+}
+let currentUser = {
+    username: "",
+    repo_url: ""
+}
 let options = {
     method: 'POST',
     uri: 'https://github.com/login/oauth/access_token',
@@ -35,6 +39,18 @@ let options = {
         'Accept': 'application/json'
       }
 };
+let sample = [
+    {
+        name:"a",
+        age: 10
+}
+]
+function modify(aa){
+    aa[0].jj="kk"
+    return aa
+}
+let myFollowers = [];
+
 let getUsers = {
     method: 'get',
     uri: 'https://api.github.com/user',
@@ -104,30 +120,86 @@ app.get('/dashboard',(req,res)=>{
         getUsers.headers.Authorization = `token ${accesscode}`
         rp(getUsers)
         .then(user=>{
-            let followers_url = JSON.parse(user).followers_url
+            let followers_url = JSON.parse(user).url
             let authenticated_user= JSON.parse(user).login
             getFollowers.headers.Authorization = `token ${accesscode}`
-            getFollowers.uri = `${followers_url}`
+            getFollowers.uri = `${followers_url}/following`
             // res.json(JSON.parse(user))
             // res.json(authenticated_user)
             rp(getFollowers)
             .then(followers=>{
-                let myFollowers = [];
                 let userData = JSON.parse(followers);
-                let currentUser = {}
+                
                 for(let i =0; i<userData.length;i++){
                     currentUser.username = userData[i].login
                     currentUser.repo_url = userData[i].repos_url
-                    myFollowers.push(currentUser)
+                    let userevents = userData[i].url+"/events"
+                    getEvents.uri = userevents
+                    // rp(getEvents)
+                    //         .then(my_events=>{
+                    //             res.send(my_events)
+                    //             })
+                    //         .catch(error=>{
+                    //             console.log(`Hey!! a critical error here: ${error}`)
+                    //         })
+                    // RENDER USER EVENTS LINK, USERNAME AND PASSWORD
+                    myFollowers.push({
+                        username: userData[i].login,
+                        render: userData[i].repos_url,
+                        events: userData[i].url+"/events"
+                    })
+                    // rp(userData[i].url+"/events")
+                    // .then(user_events=>{
+                    //     res.json({user_events})
+                    // })
+                    // .catch(user_error=>{
+                    //     res.send(user_error)
+                    // })
                 }
+                // res.json(myFollowers)
+                // GET USER EVENTS
+                let options = {
+                    method: 'GET',
+                    uri: myFollowers[1].events,
+                    form: {
+                        
+                    },
+                    headers: {
+                        'User-Agent': 'Roqak',
+                        'Accept': 'application/json'
+                      }
+                };
+                for(let k = 0; k<myFollowers; k++){
+                    options.uri = myFollowers[k].events
+                    rp(options)
+                    .then(user_events=>{
+                        let all_user_events = JSON.parse(user_events);
+                        let pushEvents = all_user_events.filter(eventss=>eventss.type === "PushEvent")
+                        myFollowers[k].commits = 'pushEvents.length'
+                        // res.json(pushEvents)
+                    })
+                    .catch(user_error=>{
+                        res.send(user_error)
+                    })
+                }
+                // req.headers['User-Agent'] = 'Roqak';
+                // rp(options)
+                //     .then(user_events=>{
+                //         let all_user_events = JSON.parse(user_events);
+                //         let pushEvents = all_user_events.filter(eventss=>eventss.type === "PushEvent")
+                //         res.json(pushEvents)
+                //     })
+                //     .catch(user_error=>{
+                //         res.send(user_error)
+                //     })
                 res.json(myFollowers)
-            })
+                })
             .catch(err=>{
-                res.send(err)
+                console.log(`Error level 1: ${err}`)
             })
         })
         .catch(error=>{
-            res.send(error)
+            console.log(`Error level 2: ${error}`)
         })
 
         // res.send(accesscode)
@@ -143,7 +215,32 @@ app.get('/dashboard',(req,res)=>{
     //     res.send('not found')
     // }
 })
+app.get('/dd',(req,res)=>{
+    // res.headers.Accept ='application/vnd.github.cloak-preview';
+    // res.headers['User-Agent'] = 'Roqak';
+    // res.header('User-Agent') = 'Roqak'
+    let options = {
+        method: 'GET',
+        uri: 'https://api.github.com/search/commits',
+        form: {
+            q:"author:Roqak",
+            type:"commit"
+        },
+        headers: {
+            'User-Agent': 'Roqak',
+            'Accept': 'application/vnd.github.cloak-preview'
+          }
+    };
+    rp(options)
+    .then(result=>{
+        res.json(JSON.parse(result))
+    })
+    .catch(err=>{
+        res.send(err)
+    })
+})
 
+console.log(modify(sample))
 app.listen(3000,()=>{
     console.log("Listening on port 3000")
 })
