@@ -6,7 +6,7 @@ const path = require('path');
 const keys = require('./config/keys');
 let accesscode = ""
 const cookieParser = require('cookie-parser')
-
+const bubble_Sort = require('./bubbleSort')
 app.use(cookieParser());
 
 app.engine('.hbs', hbs({ defaultLayout: 'main', extname: '.hbs' }));
@@ -49,6 +49,20 @@ function modify(aa){
     aa[0].jj="kk"
     return aa
 }
+test_array = [
+    {
+        a:"aa",
+        b:2,
+},
+{
+    a:"ab",
+    b:1,
+},
+{
+    a:"ac",
+    b:5,
+}
+]
 let myFollowers = [];
 
 let getUsers = {
@@ -227,12 +241,13 @@ app.get('/dashboard',(req,res)=>{
     //     console.table(`${req.session}`)
     //     res.send('not found')
     // }
+    // res.end();
 })
 app.get('/dd',(req,res)=>{
     // res.headers.Accept ='application/vnd.github.cloak-preview';
     // res.headers['User-Agent'] = 'Roqak';
     // res.header('User-Agent') = 'Roqak'
-    console.log(myFollowers)
+    // console.log(myFollowers)
     let options = {
         method: 'GET',
         // uri: 'https://api.github.com/search/commits?q=author:sainttobs&type=Commits',
@@ -248,30 +263,61 @@ app.get('/dd',(req,res)=>{
           }
     };
     let finalUser = []
-    for(let o = 0; o< myFollowers.length; o++){
-        options.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
+    // for(let o = 0; o< myFollowers.length; o++){
+    //     options.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
+    //     rp(options)
+    // .then(result=>{
+    //     let nnn = {
+    //         username : myFollowers[o].username,
+    //         render: myFollowers[o].render,
+    //         events: myFollowers[o].events,
+    //         commits: result.total_count,
+    //     }
+    //     // myFollowers[o]['username'] = result.total_count
+    //     finalUser.push(nnn)
+    //     // res.json(JSON.parse(result))
+    //     console.log("///////////////////////////////////////////////")
+    //     console.log(result.total_count)
+    // })
+    for(let index = 0; index < myFollowers.length; index++){
+        options.headers.Accept = 'application/vnd.github.cloak-preview'
+        options.headers["User-Agent"] = 'Roqak'
+    options.uri = `https://api.github.com/search/commits?q=author:${myFollowers[index].username}&type=Commits`
         rp(options)
     .then(result=>{
-        let nnn = {
-            username : myFollowers[o].username,
-            render: myFollowers[o].render,
-            events: myFollowers[o].events,
-            commits: result.total_count,
-        }
+        
         // myFollowers[o]['username'] = result.total_count
-        finalUser.push(nnn)
-        // res.json(JSON.parse(result))
-        console.log("///////////////////////////////////////////////")
-        console.log(nnn)
+        // finalUser.push(nnn)
+        console.log("/////////////////////////////////////////////")
+        // console.log(result)
+        user_json = JSON.parse(result)
+        // let nnn = {
+        //     username : myFollowers[index].username,
+        //     render: myFollowers[index].render,
+        //     events: myFollowers[index].events,
+        //     commits: user_json.total_count,
+        // }
+        // res.json()
+        // finalUser.push(user_json.total_count)
+        // finalUser.push(user_json)
+        console.log(user_json)
+        // console.log(result.total_count)
+        // res.json(finalUser)
+        res.end()
     })
     .catch(err=>{
         res.send(err)
     })
-    }
-    res.json(finalUser)
-    
+    // }
+    // res.json(finalUser)
+}
+res.json(finalUser)
+// res.end()
 })
+let arr = [3,4,5,1,2,8,7,9,6]
 
+
+console.log(bubble_Sort(test_array).reverse())
 console.log(modify(sample))
 app.listen(3000,()=>{
     console.log("Listening on port 3000")
