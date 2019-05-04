@@ -362,6 +362,6 @@ app.get('/dj',(req,res)=>{
 
 console.log(bubble_Sort(test_array).reverse())
 console.log(modify(sample))
-app.listen(3000,()=>{
+app.listen(9500,()=>{
     console.log("Listening on port 3000")
 })
