@@ -1,5 +1,4 @@
-module.exports= function (a)
-{
+module.exports= function (a){
     var swapp;
     var n = a.length-1;
     var x=a;

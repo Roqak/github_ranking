@@ -60,6 +60,18 @@ test_array = [
 },
 {
     a:"ac",
+    b:3,
+},
+{
+    a:"ac",
+    b:3,
+},
+{
+    a:"ac",
+    b:10,
+},
+{
+    a:"ac",
     b:5,
 }
 ]
@@ -279,10 +291,10 @@ app.get('/dd',(req,res)=>{
     //     console.log("///////////////////////////////////////////////")
     //     console.log(result.total_count)
     // })
-    for(let index = 0; index < myFollowers.length; index++){
+    // for(let index = 0; index < myFollowers.length; index++){
         options.headers.Accept = 'application/vnd.github.cloak-preview'
         options.headers["User-Agent"] = 'Roqak'
-    options.uri = `https://api.github.com/search/commits?q=author:${myFollowers[index].username}&type=Commits`
+    options.uri = `https://api.github.com/search/commits?q=author:${myFollowers[0].username}&type=Commits`
         rp(options)
     .then(result=>{
         
@@ -302,7 +314,7 @@ app.get('/dd',(req,res)=>{
         // finalUser.push(user_json)
         console.log(user_json)
         // console.log(result.total_count)
-        // res.json(finalUser)
+        res.json(user_json)
         res.end()
     })
     .catch(err=>{
@@ -310,11 +322,42 @@ app.get('/dd',(req,res)=>{
     })
     // }
     // res.json(finalUser)
-}
-res.json(finalUser)
+// }
+// res.json(finalUser)
 // res.end()
 })
-let arr = [3,4,5,1,2,8,7,9,6]
+let arr = ['Roqak','sainttobs','unicodeveloper','alexonozor']
+
+app.get('/dj',(req,res)=>{
+    let i = 0;
+    while(i < arr.length)
+    {
+        let options = {
+            method: 'GET',
+            form: {
+                q:"Roqak",
+                type:"commit",
+            },
+            headers: {
+                'User-Agent': 'Roqak',
+                'Accept': 'application/vnd.github.cloak-preview'
+              }
+        };
+        options.headers.Accept = 'application/vnd.github.cloak-preview'
+        options.headers["User-Agent"] = 'Roqak'
+    options.uri = `https://api.github.com/search/commits?q=author:${arr[i]}&type=Commits`
+    rp(options)
+    .then(result=>{
+        user_json = JSON.parse(result)
+        console.log(user_json.total_count)
+        i++
+    })
+    .catch(err=>{
+        res.send(err)
+    })
+    }
+    
+})
 
 
 console.log(bubble_Sort(test_array).reverse())
