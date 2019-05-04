@@ -331,7 +331,7 @@ app.get('/dd',(req,res)=>{
     res.redirect('finalstuff')
 })
 let arr = ['Roqak','sainttobs','unicodeveloper','alexonozor']
-app.get("finalstuff",(req,res)=>{
+app.get("/finalstuff",(req,res)=>{
     res.json(finalUser)
 })
 app.get('/dj',(req,res)=>{
