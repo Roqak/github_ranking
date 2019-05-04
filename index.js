@@ -13,6 +13,7 @@ app.engine('.hbs', hbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', '.hbs');
 app.set('trust proxy', 1) // trust first proxy
+var finalUser = []
 let getEvents = {
     method: 'GET',
     headers: {
@@ -201,7 +202,7 @@ app.get('/dashboard',(req,res)=>{
                 };
                 // let totalcommits = []
                 // for(let k = 0; k<myFollowers; k++){
-                    console.log(myFollowers)
+                    // console.log(myFollowers)
                     console.log(req.cookies.code)
                     // options2.uri =`https://api.github.com/search/commits?q=author:${myFollowers[1].username}&type=Commits`
                     // options2.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
@@ -274,7 +275,6 @@ app.get('/dd',(req,res)=>{
             'Accept': 'application/vnd.github.cloak-preview'
           }
     };
-    let finalUser = []
     // for(let o = 0; o< myFollowers.length; o++){
     //     options.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
     //     rp(options)
