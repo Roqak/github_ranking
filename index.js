@@ -291,10 +291,10 @@ app.get('/dd',(req,res)=>{
     //     console.log("///////////////////////////////////////////////")
     //     console.log(result.total_count)
     // })
-    // for(let index = 0; index < myFollowers.length; index++){
+    for(let index = 0; index < myFollowers.length; index++){
         options.headers.Accept = 'application/vnd.github.cloak-preview'
         options.headers["User-Agent"] = 'Roqak'
-    options.uri = `https://api.github.com/search/commits?q=author:${myFollowers[0].username}&type=Commits`
+    options.uri = `https://api.github.com/search/commits?q=author:${myFollowers[index].username}&type=Commits`
         rp(options)
     .then(result=>{
         
@@ -314,7 +314,7 @@ app.get('/dd',(req,res)=>{
         // finalUser.push(user_json)
         console.log(user_json)
         // console.log(result.total_count)
-        res.json(user_json)
+        // res.json(user_json)
         res.end()
     })
     .catch(err=>{
@@ -325,6 +325,7 @@ app.get('/dd',(req,res)=>{
 // }
 // res.json(finalUser)
 // res.end()
+    }
 })
 let arr = ['Roqak','sainttobs','unicodeveloper','alexonozor']
 
