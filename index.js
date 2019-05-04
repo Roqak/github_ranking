@@ -313,7 +313,7 @@ app.get('/dd',(req,res)=>{
         // finalUser.push(user_json.total_count)
         finalUser.push(user_json)
         console.log("Your json:")
-        console.log(user_json)
+        console.log(user_json.total_count)
         // console.log(result.total_count)
         // res.json(user_json)
         res.end()
