@@ -342,7 +342,8 @@ app.get("/finalstuff",(req,res)=>{
             client_id: keys.client_id,
             client_secret: keys.client_secret,
             state: "kdkdkddldldlkdkfd",
-            scope: 'repo,public_repo'
+            scope: 'repo,public_repo',
+            code=  req.cookies.code
         },
         headers: {
             'User-Agent': 'Roqak',
