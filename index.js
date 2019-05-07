@@ -134,7 +134,6 @@ app.get('/',(req,res)=>{
 
 app.get('/dashboard',(req,res)=>{
     console.log(`Your code is: ${options.form.code}`)
-    
     rp(options)
     .then(result=>{
         // console.log(req.header)
@@ -185,33 +184,6 @@ app.get('/dashboard',(req,res)=>{
                     //     res.send(user_error)
                     // })
                 }
-                let getAuthenticatedUser = {
-                    method: 'GET',
-                    uri: 'https://api.github.com/user',
-                    form: {
-                        allow_signup: true,
-                        client_id: keys.client_id,
-                        client_secret: keys.client_secret,
-                        state: "kdkdkddldldlkdkfd",
-                        scope: 'repo,public_repo',
-                    },
-                    headers: {
-                        'User-Agent': 'Roqak',
-                        'Accept': 'application/json'
-                      }
-                };
-                getAuthenticatedUser.form.code=  req.cookies.code
-                getAuthenticatedUser.headers.Authorization = `token ${accesscode}`
-                rp(getAuthenticatedUser)
-                .then(result=>{
-                    // res.send(result)
-                    myFollowers.push({
-                        username: result.login
-                    })
-                })
-                .catch(err=>{
-                    res.send(err)
-                })
                 // res.json(myFollowers)
                 // GET USER EVENTS
                 let options2 = {
@@ -386,7 +358,7 @@ app.get("/finalstuff",(req,res)=>{
     // .catch(err=>{
     //     res.send(err)
     // })
-    res.json(finalUser)
+    // res.json(finalUser)
 })
 
 
