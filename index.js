@@ -184,6 +184,33 @@ app.get('/dashboard',(req,res)=>{
                     //     res.send(user_error)
                     // })
                 }
+                let getAuthenticatedUser = {
+                    method: 'GET',
+                    uri: 'https://api.github.com/user',
+                    form: {
+                        allow_signup: true,
+                        client_id: keys.client_id,
+                        client_secret: keys.client_secret,
+                        state: "kdkdkddldldlkdkfd",
+                        scope: 'repo,public_repo',
+                    },
+                    headers: {
+                        'User-Agent': 'Roqak',
+                        'Accept': 'application/json'
+                      }
+                };
+                getAuthenticatedUser.form.code=  req.cookies.code
+                getAuthenticatedUser.headers.Authorization = `token ${accesscode}`
+                rp(getAuthenticatedUser)
+                .then(result=>{
+                    // res.send(result)
+                    myFollowers.push({
+                        username: result.login
+                    })
+                })
+                .catch(err=>{
+                    res.send(err)
+                })
                 // res.json(myFollowers)
                 // GET USER EVENTS
                 let options2 = {
@@ -334,31 +361,31 @@ let arr = ['Roqak','sainttobs','unicodeveloper','alexonozor']
 
 
 app.get("/finalstuff",(req,res)=>{
-    let options = {
-        method: 'GET',
-        uri: 'https://api.github.com/user',
-        form: {
-            allow_signup: true,
-            client_id: keys.client_id,
-            client_secret: keys.client_secret,
-            state: "kdkdkddldldlkdkfd",
-            scope: 'repo,public_repo',
-        },
-        headers: {
-            'User-Agent': 'Roqak',
-            'Accept': 'application/json'
-          }
-    };
-    options.form.code=  req.cookies.code
-    options.headers.Authorization = `token ${accesscode}`
-    rp(options)
-    .then(result=>{
-        res.send(result)
-    })
-    .catch(err=>{
-        res.send(err)
-    })
-    // res.json(finalUser)
+    // let getAuthenticatedUser = {
+    //     method: 'GET',
+    //     uri: 'https://api.github.com/user',
+    //     form: {
+    //         allow_signup: true,
+    //         client_id: keys.client_id,
+    //         client_secret: keys.client_secret,
+    //         state: "kdkdkddldldlkdkfd",
+    //         scope: 'repo,public_repo',
+    //     },
+    //     headers: {
+    //         'User-Agent': 'Roqak',
+    //         'Accept': 'application/json'
+    //       }
+    // };
+    // getAuthenticatedUser.form.code=  req.cookies.code
+    // getAuthenticatedUser.headers.Authorization = `token ${accesscode}`
+    // rp(getAuthenticatedUser)
+    // .then(result=>{
+    //     res.send(result)
+    // })
+    // .catch(err=>{
+    //     res.send(err)
+    // })
+    res.json(finalUser)
 })
 
 
