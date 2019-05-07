@@ -358,7 +358,7 @@ app.get("/finalstuff",(req,res)=>{
     // .catch(err=>{
     //     res.send(err)
     // })
-    // res.json(finalUser)
+    res.json(finalUser)
 })
 
 
