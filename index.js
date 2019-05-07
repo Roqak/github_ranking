@@ -13,7 +13,6 @@ app.engine('.hbs', hbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', '.hbs');
 app.set('trust proxy', 1) // trust first proxy
-var finalUser = []
 let getEvents = {
     method: 'GET',
     headers: {
@@ -77,6 +76,7 @@ test_array = [
 }
 ]
 let myFollowers = [];
+let finalUser = [];
 
 let getUsers = {
     method: 'get',
@@ -147,7 +147,7 @@ app.get('/dashboard',(req,res)=>{
         getUsers.headers.Authorization = `token ${accesscode}`
         rp(getUsers)
         .then(user=>{
-            let followers_url = JSON.parse(user).url
+            let followers_url = JSON.parse(user).url;
             let authenticated_user= JSON.parse(user).login
             getFollowers.headers.Authorization = `token ${accesscode}`
             getFollowers.uri = `${followers_url}/following`
@@ -311,7 +311,8 @@ app.get('/dd',(req,res)=>{
         // }
         // res.json()
         // finalUser.push(user_json.total_count)
-        finalUser.push(user_json)
+        finalUser.push(myFollowers[index].username)
+        // finalUser.push(user_json)
         console.log("Your json:")
         console.log(user_json)
         // console.log(result.total_count)
