@@ -350,6 +350,7 @@ app.get("/finalstuff",(req,res)=>{
           }
     };
     options.form.code=  req.cookies.code
+    options.headers.Authorization = `token ${accesscode}`
     rp(options)
     .then(result=>{
         res.send(result)
