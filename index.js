@@ -335,8 +335,8 @@ let arr = ['Roqak','sainttobs','unicodeveloper','alexonozor']
 
 app.get("/finalstuff",(req,res)=>{
     let options = {
-        method: 'POST',
-        uri: 'https://api.github.com/user/',
+        method: 'GET',
+        uri: 'https://api.github.com/user',
         form: {
             allow_signup: true,
             client_id: keys.client_id,
