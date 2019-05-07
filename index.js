@@ -343,13 +343,13 @@ app.get("/finalstuff",(req,res)=>{
             client_secret: keys.client_secret,
             state: "kdkdkddldldlkdkfd",
             scope: 'repo,public_repo',
-            code=  req.cookies.code
         },
         headers: {
             'User-Agent': 'Roqak',
             'Accept': 'application/json'
           }
     };
+    options.form.code=  req.cookies.code
     rp(options)
     .then(result=>{
         res.send(result)
