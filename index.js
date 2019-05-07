@@ -317,7 +317,7 @@ app.get('/dd',(req,res)=>{
         console.log(user_json)
         // console.log(result.total_count)
         // res.json(user_json)
-        // res.end()
+        res.end()
     })
     .catch(err=>{
         res.send(err)
