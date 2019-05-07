@@ -303,14 +303,13 @@ app.get('/dd',(req,res)=>{
         console.log("/////////////////////////////////////////////")
         // console.log(result)
         user_json = JSON.parse(result)
-        // let nnn = {
-        //     username : myFollowers[index].username,
-        //     render: myFollowers[index].render,
-        //     events: myFollowers[index].events,
-        //     commits: user_json.total_count,
-        // }
+        let nnn = {
+            username : myFollowers[index].username,
+            commits: user_json.total_count,
+        }
         // res.json()
-        finalUser.push(user_json)
+        // finalUser.push(user_json.total_count)
+        finalUser.push(nnn);
         // finalUser.push(myFollowers[index].username)
         // finalUser.push(user_json)
         console.log("Your json:")
