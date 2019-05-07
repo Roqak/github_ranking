@@ -354,8 +354,8 @@ app.get("/finalstuff",(req,res)=>{
     rp(getAuthenticatedUser)
     .then(result=>{
         // res.send(result)
-        finalUser.push({name: result.login})
-        res.json(finalUser)
+        // finalUser.push({name: result.login})
+        // res.json(finalUser)
     })
     .catch(err=>{
         res.send(err)
