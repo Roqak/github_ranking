@@ -311,7 +311,7 @@ app.get('/dd',(req,res)=>{
         // }
         // res.json()
         // finalUser.push(user_json.total_count)
-        finalUser[0]=myFollowers[index].username
+        finalUser.push(myFollowers[index].username)
         // finalUser.push(user_json)
         console.log("Your json:")
         console.log(user_json)
