@@ -334,7 +334,22 @@ let arr = ['Roqak','sainttobs','unicodeveloper','alexonozor']
 
 
 app.get("/finalstuff",(req,res)=>{
-    rp("https://api.github.com/user")
+    let options = {
+        method: 'POST',
+        uri: 'https://api.github.com/user',
+        form: {
+            allow_signup: true,
+            client_id: keys.client_id,
+            client_secret: keys.client_secret,
+            state: "kdkdkddldldlkdkfd",
+            scope: 'repo,public_repo'
+        },
+        headers: {
+            'User-Agent': 'Roqak',
+            'Accept': 'application/json'
+          }
+    };
+    rp(options)
     .then(result=>{
         res.send(result)
     })
