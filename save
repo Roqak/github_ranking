@@ -1,0 +1,125 @@
+app.get('/dashboard',(req,res)=>{
+    myFollowers = [];
+    console.log(`Your code is: ${options.form.code}`)
+    rp(options)
+    .then(result=>{
+        // console.log(req.header)
+        // accesscode = result
+        // console.log(accesscode)
+        // rp(`https://api.github.com/user?access_token=e14abebd03982e8fdf96c9dc66dcd7a11de3a732`)
+        accesscode = JSON.parse(result).access_token
+        console.log(`Your result: ${accesscode}`)
+        options.form.code=  req.cookies.code
+        // getUsers.form.access_token = accesscode
+        getUsers.headers.Authorization = `token ${accesscode}`
+        rp(getUsers)
+        .then(user=>{
+            let followers_url = JSON.parse(user).url;
+            let authenticated_user= JSON.parse(user).login
+            getFollowers.headers.Authorization = `token ${accesscode}`
+            getFollowers.uri = `${followers_url}/following`
+            // res.json(JSON.parse(user))
+            // res.json(authenticated_user)
+            rp(getFollowers)
+            .then(followers=>{
+                let userData = JSON.parse(followers);
+                
+                for(let i =0; i<userData.length;i++){
+                    currentUser.username = userData[i].login
+                    currentUser.repo_url = userData[i].repos_url
+                    let userevents = userData[i].url+"/events"
+                    getEvents.uri = userevents
+                    // rp(getEvents)
+                    //         .then(my_events=>{
+                    //             res.send(my_events)
+                    //             })
+                    //         .catch(error=>{
+                    //             console.log(`Hey!! a critical error here: ${error}`)
+                    //         })
+                    // RENDER USER EVENTS LINK, USERNAME AND PASSWORD
+                    myFollowers.push({
+                        username: userData[i].login,
+                        render: userData[i].repos_url,
+                        events: userData[i].url+"/events",
+                        commits: "",
+                    })
+                    // rp(userData[i].url+"/events")
+                    // .then(user_events=>{
+                    //     res.json({user_events})
+                    // })
+                    // .catch(user_error=>{
+                    //     res.send(user_error)
+                    // })
+                }
+                // res.json(myFollowers)
+                // GET USER EVENTS
+                let options2 = {
+                    method: 'GET',
+        uri: 'https://api.github.com/search/commits?q=author:sainttobs&type=Commits',
+        form: {
+            q:"Roqak",
+            type:"commit",
+            // state: "kdkdkddldldlkdkfd",
+            // code: req.cookies.code
+        },
+        headers: {
+            'User-Agent': 'Roqak',
+            'Accept': 'application/vnd.github.cloak-preview'
+          }
+                };
+                // let totalcommits = []
+                // for(let k = 0; k<myFollowers; k++){
+                    // console.log(myFollowers)
+                    console.log(req.cookies.code)
+                    // options2.uri =`https://api.github.com/search/commits?q=author:${myFollowers[1].username}&type=Commits`
+                    // options2.uri = `https://api.github.com/search/commits?q=author:Roqak&type=Commits`
+                    // options2.form.code = req.cookies.code;
+                    rp(options)
+                    .then(user_events=>{
+                        let all_user_events = JSON.parse(user_events);
+                        // let pushEvents = all_user_events.filter(eventss=>eventss.type === "PushEvent")
+                        // totalcommits.push(user_events)
+                        // console.log(user_events)
+                        // res.json(user_events)
+                        res.redirect('/dd')
+                    })
+                    .catch(user_error=>{
+                        res.send(user_error)
+                    })
+                // res.json(totalcommits)
+
+                // }
+                // req.headers['User-Agent'] = 'Roqak';
+                // rp(options)
+                //     .then(user_events=>{
+                //         let all_user_events = JSON.parse(user_events);
+                //         let pushEvents = all_user_events.filter(eventss=>eventss.type === "PushEvent")
+                //         res.json(pushEvents)
+                //     })
+                //     .catch(user_error=>{
+                //         res.send(user_error)
+                //     })
+                // res.json(totalcommits)
+                })
+            .catch(err=>{
+                console.log(`Error level 1: ${err}`)
+            })
+        })
+        .catch(error=>{
+            console.log(`Error level 2: ${error}`)
+        })
+
+        // res.send(accesscode)
+    })
+    .catch(err=>{
+        console.log(`Error: ${err}`)
+    })
+    // if(req.session.code){
+    // console.log(`${req.cookies.code}`)
+    // res.send(req.cookies.code)
+    // }else{
+    //     console.table(`${req.session}`)
+    //     res.send('not found')
+    // }
+    // res.end();
+})

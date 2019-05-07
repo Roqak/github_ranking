@@ -130,6 +130,12 @@ app.get('/',(req,res)=>{
     // res.send(req.header)
     // rp('https://github.com/login/oauth/authorize?allow_signup=false&client_id=9de806a7d3435218ca41')
     res.redirect(`https://github.com/login/oauth/authorize?allow_signup=true&client_id=${keys.client_id}`);
+    
+})
+
+app.get('/dashboard',(req,res)=>{
+    myFollowers=[]
+    console.log(`Your code is: ${options.form.code}`)
     let getAuthenticatedUser = {
         method: 'GET',
         uri: 'https://api.github.com/user',
@@ -154,17 +160,7 @@ app.get('/',(req,res)=>{
         myFollowers.push({
             username: auth_user.login
         })
-        // finalUser.push({name: result.login})
-        // res.json(finalUser)
-    })
-    .catch(err=>{
-        res.send(err)
-    })
-})
-
-app.get('/dashboard',(req,res)=>{
-    console.log(`Your code is: ${options.form.code}`)
-    rp(options)
+        rp(options)
     .then(result=>{
         // console.log(req.header)
         // accesscode = result
@@ -277,6 +273,13 @@ app.get('/dashboard',(req,res)=>{
     .catch(err=>{
         console.log(`Error: ${err}`)
     })
+        // finalUser.push({name: result.login})
+        // res.json(finalUser)
+    })
+    .catch(err=>{
+        res.send(err)
+    })
+    
     // if(req.session.code){
     // console.log(`${req.cookies.code}`)
     // res.send(req.cookies.code)
