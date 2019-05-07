@@ -353,7 +353,7 @@ app.get("/finalstuff",(req,res)=>{
     getAuthenticatedUser.headers.Authorization = `token ${accesscode}`
     rp(getAuthenticatedUser)
     .then(result=>{
-        // res.send(result)
+        res.send(result)
         // finalUser.push({name: result.login})
         // res.json(finalUser)
     })
