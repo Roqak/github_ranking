@@ -310,7 +310,7 @@ app.get('/dd',(req,res)=>{
         //     commits: user_json.total_count,
         // }
         // res.json()
-        finalUser.push(user_json.total_count)
+        finalUser.push(user_json)
         // finalUser.push(myFollowers[index].username)
         // finalUser.push(user_json)
         console.log("Your json:")
