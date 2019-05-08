@@ -71,8 +71,9 @@ app.get('/auth',(req,res)=>{
 app.get("/dashboard",(req,res)=>{
     myFollowers=[]
     console.log(`Your code is: ${options.form.code}`)
-    try{
+    
          (async function(){
+            try{
             let user = await rp(options)
         accesscode = JSON.parse(user).access_token
         console.log(`Your result: ${accesscode}`)
@@ -80,12 +81,13 @@ app.get("/dashboard",(req,res)=>{
         getUsers.headers.Authorization = `token ${accesscode}`
         let getAllFollowers = await rp(getUsers)
         getAllFollowers = JSON.parse(getAllFollowers)
+        res.send(getAllFollowers)
         }
-        
-         )()}
-    catch(error){
-        
-    }
+        catch(error){
+            res.send(error)
+        }
+    })
+    
 })
 
 app.listen(9500,()=>{
