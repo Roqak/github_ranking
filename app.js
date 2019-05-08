@@ -72,14 +72,17 @@ app.get("/dashboard",(req,res)=>{
     myFollowers=[]
     console.log(`Your code is: ${options.form.code}`)
     try{
-        let user = await rp(options)
+         (async function(){
+            let user = await rp(options)
         accesscode = JSON.parse(user).access_token
         console.log(`Your result: ${accesscode}`)
         options.form.code=  req.cookies.code
         getUsers.headers.Authorization = `token ${accesscode}`
         let getAllFollowers = await rp(getUsers)
         getAllFollowers = JSON.parse(getAllFollowers)
-    } 
+        }
+        
+         )()}
     catch(error){
         
     }
