@@ -136,7 +136,6 @@ app.get('/',(req,res)=>{
 app.get('/dashboard',(req,res)=>{
     myFollowers=[]
     console.log(`Your code is: ${options.form.code}`)
-    
     rp(options)
     .then(result=>{
         // console.log(req.header)
