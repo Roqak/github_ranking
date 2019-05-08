@@ -71,8 +71,7 @@ app.get('/auth',(req,res)=>{
 app.get("/dashboard",(req,res)=>{
     myFollowers=[]
     console.log(`Your code is: ${options.form.code}`)
-    
-         (async function(){
+    async (function(){
             try{
             let user = await rp(options)
         accesscode = JSON.parse(user).access_token
