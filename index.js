@@ -92,7 +92,8 @@ app.get('/auth',(req,res)=>{
     // req.session.code = req.query.code
     options.form.code=  req.cookies.code
     // getUsers.form.code=  req.cookies.code
-    res.render('index')
+    // res.redirect('dashboard')
+    res.render("index")
     // res.redirect('/dashboard')
 })
 app.get("/dashboard",(req,res)=>{
