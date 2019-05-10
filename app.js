@@ -124,16 +124,20 @@ app.get("/dashboard",(req,res)=>{
             // let toba = await rp(options2)
             for(let i = 0; i < userData.length; i++){
                 myFollowers[i+1] = {username: userData[i].login}
+                options2.uri = rp(`https://api.github.com/search/commits?q=author:${userData[i].login}&type=Commits`)
+                let totalCommitCounts = await rp(options2)
+                console.log(totalCommitCounts);
             }
-            // for(let i = 0; i<myFollowers.length; i++){
-            //     options2.uri = rp(`https://api.github.com/search/commits?q=author:${myfollowers[i].username}&type=Commits`)
-            //     let totalCommitCounts = await rp(options2)
-            //     totalCommitCounts = JSON.parse(totalCommitCounts).total_count;
-            //     console.log(totalCommitCounts);
-            // }
+            for(let follower of myFollowers){
+                options2.uri = `https://api.github.com/search/commits?q=author:${follower.username}&type=Commits`
+                let totalCommitCounts = await rp(options2)
+                totalCommitCounts = JSON.parse(totalCommitCounts).total_count;
+                console.log(totalCommitCounts);
+            // console.log(myFollowers[i].username)
+            }
             // console.log(allMyFollowers)
-            // res.send(myFollowers);
-            res.redirect("destination")
+            res.send(myFollowers);
+            // res.redirect("destination")
             } catch (error) {
                 res.send(error)
             }
@@ -144,13 +148,15 @@ app.get("/dashboard",(req,res)=>{
 app.get("/destination",(req,res)=>{
     async function finalstuff(){
         try{
-        for(let i = 0; i<myFollowers.length; i++){
-                options2.uri = rp(`https://api.github.com/search/commits?q=author:${myfollowers[i].username}&type=Commits`)
+        // for(let i = 0; i<myFollowers.length; i++){
+                options2.uri = rp(`https://api.github.com/search/commits?q=author:Roqak&type=Commits`)
+                options2.headers.Accept = 'application/vnd.github.cloak-preview'
+                options2.headers["User-Agent"] = 'Roqak'
                 let totalCommitCounts = await rp(options2)
-                totalCommitCounts = JSON.parse(totalCommitCounts).total_count;
-                console.log(totalCommitCounts);
+                totalCommitCounts = JSON.parse(totalCommitCounts);
+                res.send(totalCommitCounts);
             }
-        }
+        // }
         catch(error){
             res.send(error)
         }
