@@ -143,6 +143,7 @@ app.get("/dashboard",(req,res)=>{
             // console.log(myFollowers[i].username)
             }
             // console.log(allMyFollowers)
+            console.log(bubble_Sort(myFollowers))
             res.send(bubble_Sort(myFollowers).reverse());
             // res.redirect("destination")
             } catch (error) {
@@ -152,24 +153,24 @@ app.get("/dashboard",(req,res)=>{
   
     main()
 })
-app.get("/destination",(req,res)=>{
-    async function finalstuff(){
-        try{
-        // for(let i = 0; i<myFollowers.length; i++){
-                options2.uri = rp(`https://api.github.com/search/commits?q=author:Roqak&type=Commits`)
-                options2.headers.Accept = 'application/vnd.github.cloak-preview'
-                options2.headers["User-Agent"] = 'Roqak'
-                let totalCommitCounts = await rp(options2)
-                totalCommitCounts = JSON.parse(totalCommitCounts);
-                res.send(totalCommitCounts);
-            }
-        // }
-        catch(error){
-            res.send(error)
-        }
-    }
-    finalstuff()
-})
+// app.get("/destination",(req,res)=>{
+//     async function finalstuff(){
+//         try{
+//         // for(let i = 0; i<myFollowers.length; i++){
+//                 options2.uri = rp(`https://api.github.com/search/commits?q=author:Roqak&type=Commits`)
+//                 options2.headers.Accept = 'application/vnd.github.cloak-preview'
+//                 options2.headers["User-Agent"] = 'Roqak'
+//                 let totalCommitCounts = await rp(options2)
+//                 totalCommitCounts = JSON.parse(totalCommitCounts);
+//                 res.send(totalCommitCounts);
+//             }
+//         // }
+//         catch(error){
+//             res.send(error)
+//         }
+//     }
+//     finalstuff()
+// })
 
 app.listen(9500,()=>{
     console.log("Listening on port 3000")

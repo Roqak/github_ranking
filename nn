@@ -9,9 +9,9 @@ module.exports= function (a){
         {
             if (x[i].total_count < x[i+1].total_count)
             {
-               var temp = x[i];
-               x[i] = x[i+1];
-               x[i+1] = temp;
+               var temp = x[i].total_count;
+               x[i].total_count = x[i+1].total_count;
+               x[i+1].total_count = temp;
                swapp = true;
             }
         }
