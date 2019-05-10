@@ -124,19 +124,26 @@ app.get("/dashboard",(req,res)=>{
             // let toba = await rp(options2)
             for(let i = 0; i < userData.length; i++){
                 myFollowers[i+1] = {username: userData[i].login}
-                options2.uri = rp(`https://api.github.com/search/commits?q=author:${userData[i].login}&type=Commits`)
-                let totalCommitCounts = await rp(options2)
-                console.log(totalCommitCounts);
+                // options2.uri = rp(`https://api.github.com/search/commits?q=author:${userData[i].login}&type=Commits`)
+                // let totalCommitCounts = await rp(options2)
+                // console.log(totalCommitCounts);
             }
+            let i = 0;
             for(let follower of myFollowers){
+                options2.form.code=  req.cookies.code
+                options2.headers.Authorization = `token ${accesscode}`
+                options2.form.client_id = keys.client_id
+                options2.form.client_secret = keys.client_secret
                 options2.uri = `https://api.github.com/search/commits?q=author:${follower.username}&type=Commits`
                 let totalCommitCounts = await rp(options2)
                 totalCommitCounts = JSON.parse(totalCommitCounts).total_count;
+                myFollowers[i].total_count = totalCommitCounts;
                 console.log(totalCommitCounts);
+                i++
             // console.log(myFollowers[i].username)
             }
             // console.log(allMyFollowers)
-            res.send(myFollowers);
+            res.send(bubble_Sort(myFollowers).reverse());
             // res.redirect("destination")
             } catch (error) {
                 res.send(error)
