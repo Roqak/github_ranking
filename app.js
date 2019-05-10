@@ -144,7 +144,7 @@ app.get("/dashboard",(req,res)=>{
             }
             // console.log(allMyFollowers)
             console.log(bubble_Sort(myFollowers))
-            res.send(bubble_Sort(myFollowers).reverse());
+            res.render("dashboard");
             // res.redirect("destination")
             } catch (error) {
                 res.send(error)
